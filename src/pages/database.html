@@ -1,0 +1,299 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Ela Admin - HTML5 Admin Template</title>
+  <meta name="description" content="Ela Admin - HTML5 Admin Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+  <link rel="stylesheet" href="../assets/css/normalize.css">
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../assets/css/themify-icons.css">
+  <link rel="stylesheet" href="../assets/css/pe-icon-7-filled.css">
+  <link rel="stylesheet" href="../assets/css/flag-icon.min.css">
+  <link rel="stylesheet" href="../assets/css/cs-skin-elastic.css">
+  <link rel="stylesheet" href="../assets/css/lib/datatable/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+<style>
+  .select-table{
+    font-size:10px;
+    margin-top:-2px;
+    width:70px;
+    height:30px;
+    margin-left:5px;
+    margin-right:5px;
+    float: left
+  }
+  .block-table{
+    cursor: pointer;
+    float: left;
+    margin-left: 30px;
+  }
+  .mouse-on{
+    cursor: pointer;
+  }
+  .table-title-sort{
+    float: right;
+    margin-right: 10px
+  }
+  .block-table i{
+    float: left;
+    margin-top: 3px;
+  }
+  .block-table span{
+    float: left;
+    margin-left: 10px;
+  }
+  .del-btn{
+    width: 60px;
+    height:30px;
+    margin-top:-2px;
+    font-size: 9px;
+  }
+</style>
+</head>
+<body>
+
+<div class="content" id="cont">
+  <div class="animated fadeIn">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <strong class="card-title" style="float: left;margin-top: 7px">{{tableName}}</strong>
+            <select v-model="tableName" class="form-control" style="float: left;width: 100px;margin-left: 20px">
+              <option value="table1">表1</option>
+              <option value="table2">表2</option>
+              <option value="table3">表3</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <div class="table-top-line">
+              <div style="float: left;">
+                <span style="float: left;">显示</span>
+                <select v-model="showNum" class="form-control select-table">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+                <span style="float: left;">条数据</span>
+              </div>
+              <div class="block-table" v-on:click="showSearch">
+                <i class="menu-icon fa fa-search"></i>
+                <span>搜索</span>
+              </div>
+              <div class="block-table" v-on:click="showBtn">
+                <i class="menu-icon fa fa-wrench"></i>
+                <span>批量处理</span>
+              </div>
+              <div v-show="isDel" class="block-table">
+                <button class="btn btn-danger del-btn">删除</button>
+              </div>
+            </div>
+            <br><br>
+            <div style="height: 100%;width:980px;overflow-x: auto">
+              <table style="table-layout:fixed;" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th v-show="isDel" style="width: 65px;">
+                      <input type="checkbox" value="all" v-on:click="allChecked()" v-model="dataId">
+                    </th>
+                    <th v-show="!isDel" style="width:65px;">操作</th>
+                    <th v-for="val in datasTitle">
+                      {{val}}
+                      <i class="menu-icon fa fa-sort mouse-on table-title-sort"></i>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr v-show="isSear">
+                  <td></td>
+                  <td v-for="item in datasTitle">
+                    <input class="form-control" v-bind:placeholder="item">
+                  </td>
+                </tr>
+                <tr v-for="item in datas">
+                  <td v-show="isDel" style="width: 40px;">
+                    <input type="checkbox" v-bind:id="item.id" v-bind:value="item.id" v-model="dataId">
+                  </td>
+                  <td v-show="!isDel">
+                    <span style="font-size: 9px;" class="mouse-on"><i class="menu-icon fa fa-trash-o"></i></span>
+                    <span v-on:click="editData(item)" class="mouse-on" data-toggle="modal" data-target="#myModal" style="font-size: 9px; margin-left: 12px;"><i class="menu-icon fa fa-pencil"></i></span>
+                  </td>
+                  <td v-for="i in item">{{i}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- .animated -->
+  <!-- 模态框（Modal） -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">编辑数据</h4>
+        </div>
+        <div v-html="modalHtml" class="modal-body" style="padding:20px;height: 300px; width: 500px; overflow-y: auto; overflow-x: hidden">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button v-on:click="doModal" type="button" style="background-color: #00c282;border: #00c282" class="btn btn-primary">提交更改</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+</div><!-- .content -->
+
+<!-- Right Panel -->
+
+<!-- Scripts -->
+<script src="../assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script src="../assets/js/popper.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/jquery.matchHeight.min.js"></script>
+<script src="../assets/js/main.js"></script>
+
+
+<script src="../assets/js/lib/data-table/datatables.min.js"></script>
+<script src="../assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<script src="../assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+<script src="../assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+<script src="../assets/js/lib/data-table/jszip.min.js"></script>
+<script src="../assets/js/lib/data-table/vfs_fonts.js"></script>
+<script src="../assets/js/lib/data-table/buttons.html5.min.js"></script>
+<script src="../assets/js/lib/data-table/buttons.print.min.js"></script>
+<script src="../assets/js/lib/data-table/buttons.colVis.min.js"></script>
+<script src="../assets/js/init/datatables-init.js"></script>
+
+<script src="../assets/js/vue.js"></script>
+
+
+<script type="text/javascript">
+
+  var vm = new Vue({
+    el:'#cont',
+    data:{
+      tableName:'table1',
+      col:['name','id','phone','sex'],
+      showNum:'10',
+      isDel:false,
+      isSear:false,
+      id:[
+        '202151101','202151102','202151103',
+        '202151104','202151105','202151106','all'
+      ],
+      dataId:[],
+      isAll:false,
+      chooseAll:[],
+      datasTitle:['id','stuId','name','sex','theClass'],
+      datas:[
+        {
+          id:'202151101',
+          stuId:'202151101',
+          name:'张三',
+          sex:'女',
+          theClass:'软件152'
+        },
+        {
+          id:'202151102',
+          stuId:'202151102',
+          name:'韩业红',
+          sex:'女',
+          theClass:'软件152'
+        },
+        {
+          id:'202151103',
+          stuId:'202151103',
+          name:'王五',
+          sex:'男',
+          theClass:'软件152'
+        },
+        {
+          id:'202151104',
+          stuId:'202151104',
+          name:'谢萌萌',
+          sex:'男',
+          theClass:'软件152'
+        },
+        {
+          id:'202151105',
+          stuId:'202151105',
+          name:'顾屁',
+          sex:'女',
+          theClass:'软件152'
+        },
+        {
+          id:'202151106',
+          stuId:'202151106',
+          name:'陈保华',
+          sex:'男',
+          theClass:'软件152'
+        }
+      ],
+      modalHtml:'',
+    },
+    methods:{
+      showBtn:function(){
+        this.isDel = !this.isDel;
+        this.isSear = false;
+        this.dataId = [];
+        this.chooseAll = [];
+      },
+      showSearch:function(){
+        this.isSear = !this.isSear;
+        this.isDel = false;
+      },
+      allChecked:function () {
+        this.isAll  = !this.isAll;
+        if(this.isAll) this.dataId = this.id;
+        else this.dataId = [];
+      },
+      editData(item){
+        this.modalHtml = '';
+        console.log(item);
+        for(var i = 0; i < this.datasTitle.length; i++){
+          var isEnable = false;
+          if('id' == this.datasTitle[i] || 'createTime' == this.datasTitle[i] || 'updateTime' == this.datasTitle[i]){
+            isEnable = true;
+          }
+          this.modalHtml += '<div style="width:490px;">';
+          this.modalHtml += '<span style="font-weight:bolder;float:left;width: 70px;margin-top: 5px;">'+this.datasTitle[i]+'</span>';
+          this.modalHtml += '<input class="form-control" style="float:left;width: 350px;margin-left: 10px;" value="'+item[this.datasTitle[i]]+'"';
+          if(isEnable){
+            this.modalHtml += ' disabled';
+          }
+          this.modalHtml += '></input>';
+          this.modalHtml += '</div><br><br>';
+        }
+      },
+      doModal(){
+        $("#myModal").hide();
+        //update的数据处理
+      }
+    }
+  })
+
+</script>
+
+
+</body>
+</html>

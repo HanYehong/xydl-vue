@@ -1,0 +1,176 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Ela Admin - HTML5 Admin Template</title>
+  <meta name="description" content="Ela Admin - HTML5 Admin Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+  <link rel="stylesheet" href="../assets/css/normalize.css">
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../assets/css/themify-icons.css">
+  <link rel="stylesheet" href="../assets/css/pe-icon-7-filled.css">
+  <link rel="stylesheet" href="../assets/css/flag-icon.min.css">
+  <link rel="stylesheet" href="../assets/css/cs-skin-elastic.css">
+  <link rel="stylesheet" href="../assets/css/lib/datatable/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+  <style>
+    .select-table{
+      font-size:10px;
+      margin-top:-2px;
+      width:70px;
+      height:30px;
+      margin-left:5px;
+      margin-right:5px;
+      float: left
+    }
+    .block-table{
+      cursor: pointer;
+      float: left;
+      margin-left: 30px;
+    }
+    .mouse-on{
+      cursor: pointer;
+    }
+    .table-title-sort{
+      float: right;
+      margin-right: 10px
+    }
+    .block-table i{
+      float: left;
+      margin-top: 3px;
+    }
+    .block-table span{
+      float: left;
+      margin-left: 10px;
+    }
+    .del-btn{
+      width: 60px;
+      height:30px;
+      margin-top:-2px;
+      font-size: 9px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="content" id="cont">
+  <div class="animated fadeIn">
+    <form action="#" method="post">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <strong style="margin-right: 10px;">Server-Info</strong>{{serverInfo.serverName}}
+            </div>
+            <div class="card-body card-block">
+              <div class="row form-group">
+                <div class="col col-md-3"><label class=" form-control-label">Server ID</label></div>
+                <div class="col-12 col-md-9">
+                  <p class="form-control-static">{{serverInfo.serverId}}</p>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="server-ip-input" class=" form-control-label">IP</label></div>
+                <div class="col-12 col-md-9"><input v-model="serverInfo.serverIP" type="text" id="server-ip-input" name="text-input" class="form-control"><small class="help-block form-text">服务器IP地址</small></div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="server-port-input" class=" form-control-label">Port</label></div>
+                <div class="col-12 col-md-9"><input v-model="serverInfo.serverPort" type="text" id="server-port-input" name="email-input" class="form-control"><small class="help-block form-text">服务器端口</small></div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="service-input" class=" form-control-label">Service</label></div>
+                <div class="col-12 col-md-9"><input v-model="serverInfo.service" type="text" id="service-input" name="password-input" class="form-control"><small class="help-block form-text">所部署的微服务名称</small></div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="databse-input" class=" form-control-label">Database</label></div>
+                <div class="col-12 col-md-9"><input v-model="serverInfo.database" type="text" id="databse-input" name="email-input" class="form-control"><small class="help-block form-text">数据库名称</small></div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="databse-ip-input" class=" form-control-label">DB IP</label></div>
+                <div class="col-12 col-md-9"><input v-model="serverInfo.dbIP" type="text" id="databse-ip-input" name="password-input" class="form-control"><small class="help-block form-text">数据库IP地址</small></div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="databse-port-input" class=" form-control-label">DB Port</label></div>
+                <div class="col-12 col-md-9"><input v-model="serverInfo.dbPort" type="text" id="databse-port-input" name="password-input" class="form-control"><small class="help-block form-text">数据库端口</small></div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="service-description" class=" form-control-label">Service description</label></div>
+                <div class="col-12 col-md-9"><textarea v-model="serverInfo.serviceDescription" name="textarea-input" id="service-description" rows="9" placeholder="服务器/微服务描述..." class="form-control"></textarea></div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fa fa-dot-circle-o"></i> Update
+              </button>
+              <button type="reset" class="btn btn-danger btn-sm">
+                <i class="fa fa-ban"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div><!-- .animated -->
+  <img style="position: fixed; top: 100px; left: 620px; width: 280px; " src="../assets/images/server.jpg">
+</div><!-- .content -->
+
+<!-- Scripts -->
+<script src="../assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script src="../assets/js/popper.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/jquery.matchHeight.min.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/lib/data-table/datatables.min.js"></script>
+<script src="../assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<script src="../assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+<script src="../assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+<script src="../assets/js/lib/data-table/jszip.min.js"></script>
+<script src="../assets/js/lib/data-table/vfs_fonts.js"></script>
+<script src="../assets/js/lib/data-table/buttons.html5.min.js"></script>
+<script src="../assets/js/lib/data-table/buttons.print.min.js"></script>
+<script src="../assets/js/lib/data-table/buttons.colVis.min.js"></script>
+<script src="../assets/js/init/datatables-init.js"></script>
+
+<script src="../assets/js/vue.js"></script>
+
+
+<script type="text/javascript">
+
+  var vm = new Vue({
+    el:'#cont',
+    data:{
+      serverInfo:{
+        serverName:'eureka-server-1',
+        serverId:'daudDSADINDid543',
+        serverIP:'192.168.43.38',
+        serverPort:'5001',
+        service:'XYDL-EUREKA-SERVICE',
+        database:'',
+        dbIP:'',
+        dbPort:'',
+        serviceDescription:'微服务注册中心1'
+      }
+    },
+    methods:{
+
+    }
+  })
+
+</script>
+
+
+</body>
+</html>

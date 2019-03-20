@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="test">
+  <div v-for="val in opt">{{val}}</div>
+</div>
+
+<script src="../assets/js/vue.js"></script>
+<script>
+  new Vue({
+    el:"#test",
+    data:{
+      opt:['name','sex','country']
+    }
+  })
+</script>
+</body>
+</html>
